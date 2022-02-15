@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.get("/api/topics", getAllTopics);
 
-app.use((err, req, res, next) => {
+app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Path not found" });
 });
 
