@@ -60,10 +60,25 @@ describe("app", () => {
             author: "butter_bridge",
             body: "I find this existence challenging",
             created_at: "2020-07-09T20:11:00.000Z",
-            // created_at: convertTimestampToDate({ created_at: 1594329060000 })
-            //   .created_at,
+            // created_at: convertTimestampToDate({created_at: 1594329060000}),
             votes: 100,
           });
+        });
+    });
+    test("status: 404 - should return with a message 'No article with this article id number' when requesting an invalid article_id number", () => {
+      return request(app)
+        .get("/api/articles/1989")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.msg).toBe("No article with this article id number");
+        });
+    });
+    test("status: 400 - should return with a message 'Bad Request' when ID request isn't a number", () => {
+      return request(app)
+        .get("/api/articles/notAnId")
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request");
         });
     });
   });

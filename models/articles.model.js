@@ -9,5 +9,12 @@ exports.selectArticleById = (article_id) => {
     `,
       [article_id]
     )
-    .then((result) => result.rows[0]);
+    .then((result) => {
+      if (result.rows.length < 1) {
+        return Promise.reject({
+          status: 404,
+          msg: "No article with this article id number",
+        });
+      } else return result.rows[0];
+    });
 };
