@@ -86,7 +86,7 @@ describe("app", () => {
   });
 
   describe("PATCH - /api/articles/:article_id", () => {
-    test("status: 202 - should accept the request in the form of an object { inc_vote: newVote }", () => {
+    test("status: 201 - should accept the request in the form of an object { inc_vote: newVote }", () => {
       return request(app)
         .patch("/api/articles/1")
         .send({ inc_votes: 10 })
