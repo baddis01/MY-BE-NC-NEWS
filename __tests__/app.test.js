@@ -53,16 +53,18 @@ describe("app", () => {
         .get("/api/articles/1")
         .expect(200)
         .then((res) => {
-          expect(res.body.article).toEqual({
-            article_id: 1,
-            title: "Living in the shadow of a great man",
-            topic: "mitch",
-            author: "butter_bridge",
-            body: "I find this existence challenging",
-            created_at: "2020-07-09T20:11:00.000Z",
-            // created_at: convertTimestampToDate({created_at: 1594329060000}),
-            votes: 100,
-          });
+          expect(res.body.article).toEqual(
+            expect.objectContaining({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              topic: "mitch",
+              author: "butter_bridge",
+              body: "I find this existence challenging",
+              created_at: "2020-07-09T20:11:00.000Z",
+              // created_at: convertTimestampToDate({created_at: 1594329060000}),
+              votes: 100,
+            })
+          );
         });
     });
     test("status: 404 - should return with a message 'No article with this article id number' when requesting an invalid article_id number", () => {
