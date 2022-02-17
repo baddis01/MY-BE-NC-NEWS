@@ -84,6 +84,45 @@ describe("app", () => {
         });
     });
   });
+
+  describe("PATCH - /api/articles/:article_id", () => {
+    test("status: 202 - should accept the request in the form of an object { inc_vote: newVote }", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: 10 })
+        .expect(201)
+        .then((res) => {
+          expect(res.body.article.votes).toBe(110);
+        });
+    });
+    test("status: 400 - should return with a 'Bad request' message when missing fields {} ", () => {
+      return request(app)
+        .patch("/api/articles/2")
+        .send({})
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request - Missing/Incorrect Fields");
+        });
+    });
+    test("status: 400 - should return with a 'Bad Request' when data type is incorrect", () => {
+      return request(app)
+        .patch("/api/articles/3")
+        .send({ inc_votes: "twelve" })
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request");
+        });
+    });
+    test("status: 400 - should return with 'Bad Request' when key is wrong", () => {
+      return request(app)
+        .patch("/api/articles/4")
+        .send({ increase_das_votes: 6 })
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request - Missing/Incorrect Fields");
+        });
+    });
+  });
 });
 
 // expect(res.body.article).toEqual(

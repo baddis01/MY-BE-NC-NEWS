@@ -18,3 +18,26 @@ exports.selectArticleById = (article_id) => {
       } else return result.rows[0];
     });
 };
+
+exports.updateArticleVotes = (article_id, inc_votes) => {
+  if (!inc_votes) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request - Missing/Incorrect Fields",
+    });
+  } else
+    return db
+      .query(
+        `
+    UPDATE articles
+    SET
+      votes = votes + $1
+    WHERE article_id = $2
+    RETURNING *;
+    `,
+        [inc_votes, article_id]
+      )
+      .then((results) => {
+        return results.rows[0];
+      });
+};
