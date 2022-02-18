@@ -6,6 +6,7 @@ const {
 const {
   handleCustomErrors,
   handlePsqlErrors,
+  handle500Errors,
 } = require("./controllers/errors.controller");
 const { getAllTopics } = require("./controllers/topics.controller");
 const app = express();
@@ -19,11 +20,7 @@ app.patch("/api/articles/:article_id", patchArticleVotes);
 
 app.use(handleCustomErrors);
 app.use(handlePsqlErrors);
-
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send({ msg: "Internal Server Error" });
-});
+app.use(handle500Errors);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Path not found" });

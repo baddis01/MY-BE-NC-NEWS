@@ -37,7 +37,12 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
     `,
         [inc_votes, article_id]
       )
-      .then((results) => {
-        return results.rows[0];
+      .then((result) => {
+        if (result.rows.length < 1) {
+          return Promise.reject({
+            status: 404,
+            msg: "No article with this article id number",
+          });
+        } else return result.rows[0];
       });
 };
