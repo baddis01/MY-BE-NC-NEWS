@@ -150,6 +150,34 @@ describe("app", () => {
         });
     });
   });
+
+  describe("GET - /api/users", () => {
+    test("status: 200 - should return a status 200", () => {
+      return request(app).get("/api/users").expect(200);
+    });
+    test("status: 200 - should return an array of users objects with a length of 4", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.users).toHaveLength(4);
+        });
+    });
+    test("status: 200 - each user object should conatin the expected properties", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((res) => {
+          res.body.users.forEach((user) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+  });
 });
 
 // expect(res.body.article).toEqual(
