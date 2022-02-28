@@ -178,16 +178,37 @@ describe("app", () => {
         });
     });
   });
-});
 
-// expect(res.body.article).toEqual(
-//     expect.objectContaining({
-//       author: expect.any(String),
-//       title: expect.any(String),
-//       article_id: expect.any(Number),
-//       body: expect.any(String),
-//       topic: expect.any(String),
-//       created_at: expect.any(Number),
-//       votes: expect.any(Number)
-//     })
-//  );
+  describe("GET -  /api/articles", () => {
+    test("status: 200 - should return a status 200", () => {
+      return request(app).get("/api/articles").expect(200);
+    });
+    test("status: 200 - should return an array of article objects with a length of 12", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toHaveLength(12);
+        });
+    });
+    test("status: 200 - each article object should contain the expected properties", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((res) => {
+          res.body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+  });
+});
