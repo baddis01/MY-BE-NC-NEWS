@@ -163,7 +163,7 @@ describe("app", () => {
           expect(res.body.users).toHaveLength(4);
         });
     });
-    test("status: 200 - each user object should conatin the expected properties", () => {
+    test("status: 200 - each user object should contain the expected properties", () => {
       return request(app)
         .get("/api/users")
         .expect(200)

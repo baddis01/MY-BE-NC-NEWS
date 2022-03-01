@@ -10,9 +10,6 @@ exports.selectAllArticles = () => {
     )
     .then(({ rows }) => {
       return rows;
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };
 
