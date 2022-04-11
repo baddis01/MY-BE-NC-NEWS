@@ -47,7 +47,7 @@ describe("app", () => {
     });
   });
 
-  describe("GET - /api/articles/:article_id", () => {
+  describe.only("GET - /api/articles/:article_id", () => {
     test("status: 200 - should return return an article object with all the containing all expected properties ", () => {
       return request(app)
         .get("/api/articles/1")
@@ -63,6 +63,7 @@ describe("app", () => {
               created_at: "2020-07-09T20:11:00.000Z",
               // created_at: convertTimestampToDate({created_at: 1594329060000}),
               votes: 100,
+              comment_count: 11,
             })
           );
         });

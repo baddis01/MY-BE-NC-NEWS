@@ -17,8 +17,15 @@ exports.selectArticleById = (article_id) => {
   return db
     .query(
       `
-    SELECT * FROM articles 
-    WHERE article_id = $1;
+    WITH cte_comment_count AS (
+    SELECT comments.article_id, COUNT(comment_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments ON articles.article_id = comments.article_id
+    GROUP BY comments.article_id)
+    
+    SELECT articles.*, CAST(cte_comment_count.comment_count AS INTEGER) FROM articles
+    LEFT JOIN cte_comment_count ON cte_comment_count.article_id = articles.article_id
+    WHERE articles.article_id = $1;
     `,
       [article_id]
     )
@@ -28,7 +35,10 @@ exports.selectArticleById = (article_id) => {
           status: 404,
           msg: "No article with this article id number",
         });
-      } else return result.rows[0];
+      } else {
+        console.log(result.rows[0]);
+        return result.rows[0];
+      }
     });
 };
 
