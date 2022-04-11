@@ -68,6 +68,25 @@ describe("app", () => {
           );
         });
     });
+    test("status: 200 - should return return an article object with all the containing all expected properties but testing 0 comments in comment count field", () => {
+      return request(app)
+        .get("/api/articles/4")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.article).toEqual(
+            expect.objectContaining({
+              article_id: 4,
+              title: "Student SUES Mitch!",
+              topic: "mitch",
+              author: "rogersop",
+              body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
+              created_at: "2020-05-06T01:14:00.000Z",
+              votes: 0,
+              comment_count: 0,
+            })
+          );
+        });
+    });
     test("status: 404 - should return with a message 'No article with this article id number' when requesting an invalid article_id number", () => {
       return request(app)
         .get("/api/articles/1989")
