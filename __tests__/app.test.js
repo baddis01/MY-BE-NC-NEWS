@@ -47,7 +47,40 @@ describe("app", () => {
     });
   });
 
-  describe.only("GET - /api/articles/:article_id", () => {
+  describe("GET - /api/articles", () => {
+    test("status: 200 - should return a status 200", () => {
+      return request(app).get("/api/articles").expect(200);
+    });
+    test("status: 200 - should return an array of article objects with a length of 12", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toHaveLength(12);
+        });
+    });
+    test("status: 200 - each article object should contain the expected properties", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((res) => {
+          res.body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+  });
+
+  describe("GET - /api/articles/:article_id", () => {
     test("status: 200 - should return return an article object with all the containing all expected properties ", () => {
       return request(app)
         .get("/api/articles/1")
@@ -101,6 +134,41 @@ describe("app", () => {
         .expect(400)
         .then((res) => {
           expect(res.body.msg).toBe("Bad Request");
+        });
+    });
+  });
+
+  describe("GET - /api/articles/:article_id/comments", () => {
+    test("status: 200 - should return an array of comment objects, each should have the expected properties", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then((res) => {
+          expect(res.body[0]).toEqual(
+            expect.objectContaining({
+              comment_id: 2,
+              body: "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
+              votes: 14,
+              author: "butter_bridge",
+              created_at: "2020-10-31T03:03:00.000Z",
+            })
+          );
+        });
+    });
+    test("status: 200 - should return an array of article objects with a length of 11", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then((res) => {
+          expect(res.body).toHaveLength(11);
+        });
+    });
+    test("status: 404 - should return with a message 'No comments for this article id number' when requesting an article_id number with 0 comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.msg).toBe("No comments for this article id number");
         });
     });
   });
@@ -192,39 +260,6 @@ describe("app", () => {
             expect(user).toEqual(
               expect.objectContaining({
                 username: expect.any(String),
-              })
-            );
-          });
-        });
-    });
-  });
-
-  describe("GET -  /api/articles", () => {
-    test("status: 200 - should return a status 200", () => {
-      return request(app).get("/api/articles").expect(200);
-    });
-    test("status: 200 - should return an array of article objects with a length of 12", () => {
-      return request(app)
-        .get("/api/articles")
-        .expect(200)
-        .then((res) => {
-          expect(res.body.articles).toHaveLength(12);
-        });
-    });
-    test("status: 200 - each article object should contain the expected properties", () => {
-      return request(app)
-        .get("/api/articles")
-        .expect(200)
-        .then((res) => {
-          res.body.articles.forEach((article) => {
-            expect(article).toEqual(
-              expect.objectContaining({
-                author: expect.any(String),
-                title: expect.any(String),
-                article_id: expect.any(Number),
-                topic: expect.any(String),
-                created_at: expect.any(String),
-                votes: expect.any(Number),
               })
             );
           });
