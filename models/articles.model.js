@@ -4,8 +4,21 @@ exports.selectAllArticles = () => {
   return db
     .query(
       `
-    SELECT author, title, article_id, topic, created_at, votes FROM articles
-    ORDER BY created_at DESC;
+      WITH cte_comment_count AS (
+        SELECT comments.article_id, COUNT(comment_id) AS comment_count
+        FROM articles
+        LEFT JOIN comments ON articles.article_id = comments.article_id
+        GROUP BY comments.article_id)
+    
+        SELECT articles.*, 
+        CASE 
+          WHEN cte_comment_count.comment_count IS NULL 
+          THEN 0 
+          ELSE 
+          CAST(cte_comment_count.comment_count AS INTEGER) 
+        END AS comment_count
+        FROM articles
+        LEFT JOIN cte_comment_count ON cte_comment_count.article_id = articles.article_id;
     `
     )
     .then(({ rows }) => {
