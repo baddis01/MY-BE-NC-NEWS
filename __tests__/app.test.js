@@ -73,6 +73,7 @@ describe("app", () => {
                 topic: expect.any(String),
                 created_at: expect.any(String),
                 votes: expect.any(Number),
+                comment_count: expect.any(Number),
               })
             );
           });
@@ -94,7 +95,6 @@ describe("app", () => {
               author: "butter_bridge",
               body: "I find this existence challenging",
               created_at: "2020-07-09T20:11:00.000Z",
-              // created_at: convertTimestampToDate({created_at: 1594329060000}),
               votes: 100,
               comment_count: 11,
             })
