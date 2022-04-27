@@ -6,6 +6,7 @@ const {
 } = require("./controllers/articles.controller");
 const {
   getAllCommentsByArticleId,
+  addCommentByArticleId,
 } = require("./controllers/comments.controller");
 const {
   handleCustomErrors,
@@ -24,6 +25,7 @@ app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getAllCommentsByArticleId);
 app.patch("/api/articles/:article_id", patchArticleVotes);
+app.post("/api/articles/:article_id/comments", addCommentByArticleId);
 
 app.get("/api/users", getAllUsers);
 
