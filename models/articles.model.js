@@ -1,6 +1,20 @@
 const db = require("../db/connection.js");
 
-exports.selectAllArticles = () => {
+exports.selectAllArticles = (sort_by, order, topic) => {
+  let field = "articles.created_at";
+  const artFields = ["article_id", "title", "topic", "author", "body", "votes"];
+
+  if (artFields.includes(sort_by)) {
+    field = `articles.${sort_by}`;
+  } else if (sort_by === "comment_count") {
+    field = "comment_count";
+  }
+
+  const direction =
+    typeof order !== "boolean" || order === true ? " DESC" : " ASC";
+
+  const topicCheck = typeof topic === "string";
+
   return db
     .query(
       `
@@ -18,8 +32,11 @@ exports.selectAllArticles = () => {
       CAST(cte_comment_count.comment_count AS INTEGER) 
     END AS comment_count
     FROM articles
-    LEFT JOIN cte_comment_count ON cte_comment_count.article_id = articles.article_id;
-    `
+    LEFT JOIN cte_comment_count ON cte_comment_count.article_id = articles.article_id
+    ${topicCheck ? "WHERE articles.topic = $1" : ""}
+    ORDER BY ${field + direction};
+    `,
+      topicCheck ? [topic] : []
     )
     .then(({ rows }) => {
       return rows;

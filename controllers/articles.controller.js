@@ -5,7 +5,8 @@ const {
 } = require("../models/articles.model.js");
 
 exports.getAllArticles = (req, res, next) => {
-  selectAllArticles()
+  const { sort_by, order, topic } = req.query;
+  selectAllArticles(sort_by, order?.toLowerCase() !== "false", topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
