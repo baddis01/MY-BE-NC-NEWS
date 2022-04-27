@@ -47,7 +47,7 @@ describe("app", () => {
     });
   });
 
-  describe.only("GET - /api/articles", () => {
+  describe("GET - /api/articles", () => {
     test("status: 200 - should return a status 200", () => {
       return request(app).get("/api/articles").expect(200);
     });
