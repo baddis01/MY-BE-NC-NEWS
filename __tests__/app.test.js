@@ -239,6 +239,48 @@ describe("app", () => {
     });
   });
 
+  describe("POST - /api/articles/:article_id/comments", () => {
+    test("status: 201 - should return a new comment object to the comments array based on the article_id with the correct properties with the new comment", () => {
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send({ username: "icellusedkars", body: "mou shindeiru" })
+        .expect(201)
+        .then((res) => {
+          expect(res.body).toEqual(
+            expect.objectContaining({
+              comment_id: 19,
+              body: "mou shindeiru",
+              votes: 0,
+              author: "icellusedkars",
+              article_id: 2,
+              created_at: expect.any(String),
+            })
+          );
+        });
+    });
+    test("status: 400 - should return with a 'Bad Request' when body is malformed or miss required fields", () => {
+      return request(app)
+        .post("/api/articles/3/comments")
+        .send({})
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request");
+        });
+    });
+    test("status: 400 - should return with a 'Bad Request' message when incorrect key-value pairs entered", () => {
+      return request(app)
+        .post("/api/articles/3/comments")
+        .send({
+          da_person_dat_wrot_it: 9,
+          da_writing: "sumfing sumfing sumfing",
+        })
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request");
+        });
+    });
+  });
+
   describe("GET - /api/users", () => {
     test("status: 200 - should return a status 200", () => {
       return request(app).get("/api/users").expect(200);
