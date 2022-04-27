@@ -79,6 +79,77 @@ describe("app", () => {
           });
         });
     });
+    test("status: 200 - should return the array of objects sorted by date as the default ", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toBeSortedBy("created_at", {
+            descending: true,
+          });
+        });
+    });
+    const sharedTests = (field, descending) => {
+      return request(app)
+        .get(`/api/articles?sort_by=${field}&order=${descending}`)
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toBeSortedBy(field, {
+            descending,
+          });
+        });
+    };
+    test("status: 200 - should return the array of objects sorted by article_id and order by ascending", () => {
+      return sharedTests("article_id", false);
+    });
+    test("status: 200 - should return the array of objects sorted by title and order by descending", () => {
+      return sharedTests("title", true);
+    });
+    test("status: 200 - should return the array of objects sorted by comment count and order by ascending", () => {
+      return sharedTests("comment_count", false);
+    });
+    test("status: 200 - should return a filtered array of objects based on the topic mitch", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toHaveLength(11);
+          res.body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: "mitch",
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+    test("status: 200 - should return a filtered array of objects based on the topic cats", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toHaveLength(1);
+          res.body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: "cats",
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
   });
 
   describe("GET - /api/articles/:article_id", () => {
