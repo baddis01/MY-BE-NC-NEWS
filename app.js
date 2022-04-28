@@ -7,6 +7,7 @@ const {
 const {
   getAllCommentsByArticleId,
   addCommentByArticleId,
+  deleteCommentByCommentId,
 } = require("./controllers/comments.controller");
 const {
   handleCustomErrors,
@@ -19,13 +20,15 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/api/topics", getAllTopics);
-
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getAllCommentsByArticleId);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 app.post("/api/articles/:article_id/comments", addCommentByArticleId);
+
+app.delete("/api/comments/:comment_id", deleteCommentByCommentId);
+
+app.get("/api/topics", getAllTopics);
 
 app.get("/api/users", getAllUsers);
 
