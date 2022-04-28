@@ -18,35 +18,6 @@ describe("app", () => {
       });
   });
 
-  describe("GET - /api/topics", () => {
-    test("status: 200 - should show status of 200", () => {
-      return request(app).get("/api/topics").expect(200);
-    });
-    test("status: 200 - should return a topics array with a length of 3", () => {
-      return request(app)
-        .get("/api/topics")
-        .expect(200)
-        .then((res) => {
-          expect(res.body.topics).toHaveLength(3);
-        });
-    });
-    test("status: 200 - each topic object should conatin the expected properties", () => {
-      return request(app)
-        .get("/api/topics")
-        .expect(200)
-        .then((res) => {
-          res.body.topics.forEach((topic) => {
-            expect(topic).toEqual(
-              expect.objectContaining({
-                slug: expect.any(String),
-                description: expect.any(String),
-              })
-            );
-          });
-        });
-    });
-  });
-
   describe("GET - /api/articles", () => {
     test("status: 200 - should return a status 200", () => {
       return request(app).get("/api/articles").expect(200);
@@ -348,6 +319,62 @@ describe("app", () => {
         .expect(400)
         .then((res) => {
           expect(res.body.msg).toBe("Bad Request");
+        });
+    });
+  });
+
+  describe("DELETE - /api/comments/:comment_id", () => {
+    test("status: 204 - should delete given comment via the comment_id", () => {
+      return request(app)
+        .delete("/api/comments/18")
+        .expect(204)
+        .then((res) => {
+          expect(res.body).toEqual({});
+        });
+    });
+    test("status: 400 - should return with a message 'Bad Request' when ID request isn't a number", () => {
+      return request(app)
+        .delete("/api/comments/couldNotBeLessOfAnId")
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toBe("Bad Request");
+        });
+    });
+    test("status: 404 - should return with a message 'No comment with this comment id number' when requesting an invalid comment_id number", () => {
+      return request(app)
+        .delete("/api/comments/47531")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.msg).toBe("No comment with this comment id number");
+        });
+    });
+  });
+
+  describe("GET - /api/topics", () => {
+    test("status: 200 - should show status of 200", () => {
+      return request(app).get("/api/topics").expect(200);
+    });
+    test("status: 200 - should return a topics array with a length of 3", () => {
+      return request(app)
+        .get("/api/topics")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.topics).toHaveLength(3);
+        });
+    });
+    test("status: 200 - each topic object should conatin the expected properties", () => {
+      return request(app)
+        .get("/api/topics")
+        .expect(200)
+        .then((res) => {
+          res.body.topics.forEach((topic) => {
+            expect(topic).toEqual(
+              expect.objectContaining({
+                slug: expect.any(String),
+                description: expect.any(String),
+              })
+            );
+          });
         });
     });
   });
