@@ -24,7 +24,7 @@ exports.selectAllArticles = (sort_by, order, topic) => {
     LEFT JOIN comments ON articles.article_id = comments.article_id
     GROUP BY comments.article_id)
     
-    SELECT articles.*, 
+    SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, 
     CASE 
       WHEN cte_comment_count.comment_count IS NULL 
       THEN 0 
