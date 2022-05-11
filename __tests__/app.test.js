@@ -222,7 +222,17 @@ describe("app", () => {
         .send({ inc_votes: 10 })
         .expect(200)
         .then((res) => {
-          expect(res.body.article.votes).toBe(110);
+          expect(res.body.article).toEqual(
+            expect.objectContaining({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              topic: "mitch",
+              author: "butter_bridge",
+              body: "I find this existence challenging",
+              created_at: "2020-07-09T20:11:00.000Z",
+              votes: 110,
+            })
+          );
         });
     });
     test("status: 200 - should accept the request in the form of an object { inc_vote: newVote } taking a negative number", () => {
@@ -231,7 +241,17 @@ describe("app", () => {
         .send({ inc_votes: -10 })
         .expect(200)
         .then((res) => {
-          expect(res.body.article.votes).toBe(90);
+          expect(res.body.article).toEqual(
+            expect.objectContaining({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              topic: "mitch",
+              author: "butter_bridge",
+              body: "I find this existence challenging",
+              created_at: "2020-07-09T20:11:00.000Z",
+              votes: 90,
+            })
+          );
         });
     });
     test("status: 400 - should return with a 'Bad request' message when missing fields {} ", () => {
