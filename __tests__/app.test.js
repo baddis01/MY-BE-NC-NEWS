@@ -215,7 +215,7 @@ describe("app", () => {
     });
   });
 
-  describe.only("PATCH - /api/articles/:article_id", () => {
+  describe("PATCH - /api/articles/:article_id", () => {
     test("status: 200 - should accept the request in the form of an object { inc_vote: newVote } taking a positive number", () => {
       return request(app)
         .patch("/api/articles/1")
