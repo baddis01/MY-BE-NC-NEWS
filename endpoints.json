@@ -2,6 +2,90 @@
   "GET /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
+  "GET /api/articles": {
+    "description": "serves an array of objects of all articles that covers all topics",
+    "queries": ["author", "topic", "sort_by", "order"],
+    "exampleResponse": {
+      "articles": [
+        {
+          "author": "Living in the shadow of a great man",
+          "title": "mitch",
+          "article_id": "1",
+          "topic": "butter_bridge",
+          "created_at": 1594329060000,
+          "votes": 100
+        }
+      ]
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves an article object based on the article id given",
+    "queries": [],
+    "exampleResponse": {
+      "articles/5": {
+        "article_id": 5,
+        "title": "UNCOVERED: catspiracy to bring down democracy",
+        "topic": "cats",
+        "author": "rogersop",
+        "body": "Bastet walks amongst us, and the cats are taking arms!",
+        "created_at": 1596464040000,
+        "votes": 0,
+        "comment_count": 2
+      }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array of comment objects based on the given article id",
+    "queries": ["author", "sort_by", "order"],
+    "exampleResponse": {
+      "articles/9/comments": [
+        {
+          "comment_id": 1,
+          "votes": 16,
+          "created_at": 1586179020000,
+          "author": "butter_bridge",
+          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+        }
+      ]
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "serves to alter the votes either by either a prositive or negative amount of an article based on the article id and to show the updated article object",
+    "queries": ["inc_votes"],
+    "exampleResponse": {
+      "articles/5": [
+        {
+          "article_id": 5,
+          "title": "UNCOVERED: catspiracy to bring down democracy",
+          "topic": "cats",
+          "author": "rogersop",
+          "body": "Bastet walks amongst us, and the cats are taking arms!",
+          "created_at": 1596464040000,
+          "votes": 10
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "serves to enter the username and body of the comment and then to post the comment object",
+    "queries": [],
+    "exampleResponse": {
+      "articles/6/comments": {
+        "body": "This is a bad article name",
+        "votes": 1,
+        "author": "butter_bridge",
+        "article_id": 6,
+        "created_at": 1602433380000
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "serves to remove a comment object based on the comment id",
+    "queries": [],
+    "exampleResponse": {
+      "comments/18": {}
+    }
+  },
   "GET /api/topics": {
     "description": "serves an array of all topics",
     "queries": [],
@@ -9,17 +93,16 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
-  "GET /api/articles": {
-    "description": "serves an array of all topics",
-    "queries": ["author", "topic", "sort_by", "order"],
+  "GET /api/users": {
+    "description": "serves an array of objects with the username only",
+    "queries": [],
     "exampleResponse": {
-      "articles": [
+      "users": [
         {
-          "title": "Seafood substitutions are increasing",
-          "topic": "cooking",
-          "author": "weegembump",
-          "body": "Text from the article..",
-          "created_at": 1527695953341
+          "username": "butter_bridge",
+          "username": "icellusedkars",
+          "username": "rogersop",
+          "username": "lurker"
         }
       ]
     }
