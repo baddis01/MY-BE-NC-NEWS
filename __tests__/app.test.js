@@ -18,6 +18,29 @@ describe("app", () => {
       });
   });
 
+  describe("GET - /api", () => {
+    test("Status 200: return an object containing details of all available endpoints", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.data).toEqual(
+            expect.objectContaining({
+              "GET - /api": expect.any(Object),
+              "GET - /api/articles": expect.any(Object),
+              "GET - /api/articles/:article_id": expect.any(Object),
+              "GET - /api/articles/:article_id/comments": expect.any(Object),
+              "PATCH - /api/articles/:article_id": expect.any(Object),
+              "POST - /api/articles/:article_id/comments": expect.any(Object),
+              "DELETE - /api/comments/:comment_id": expect.any(Object),
+              "GET - /api/topics": expect.any(Object),
+              "GET - /api/users": expect.any(Object),
+            })
+          );
+        });
+    });
+  });
+
   describe("GET - /api/articles", () => {
     test("status: 200 - should return a status 200", () => {
       return request(app).get("/api/articles").expect(200);
