@@ -1,8 +1,8 @@
 {
-  "GET /api": {
+  "GET - /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
-  "GET /api/articles": {
+  "GET - /api/articles": {
     "description": "serves an array of objects of all articles that covers all topics",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
@@ -18,7 +18,7 @@
       ]
     }
   },
-  "GET /api/articles/:article_id": {
+  "GET - /api/articles/:article_id": {
     "description": "serves an article object based on the article id given",
     "queries": [],
     "exampleResponse": {
@@ -34,7 +34,7 @@
       }
     }
   },
-  "GET /api/articles/:article_id/comments": {
+  "GET - /api/articles/:article_id/comments": {
     "description": "serves an array of comment objects based on the given article id",
     "queries": ["author", "sort_by", "order"],
     "exampleResponse": {
@@ -49,7 +49,7 @@
       ]
     }
   },
-  "PATCH /api/articles/:article_id": {
+  "PATCH - /api/articles/:article_id": {
     "description": "serves to alter the votes either by either a prositive or negative amount of an article based on the article id and to show the updated article object",
     "queries": ["inc_votes"],
     "exampleResponse": {
@@ -66,7 +66,7 @@
       ]
     }
   },
-  "POST /api/articles/:article_id/comments": {
+  "POST - /api/articles/:article_id/comments": {
     "description": "serves to enter the username and body of the comment and then to post the comment object",
     "queries": [],
     "exampleResponse": {
@@ -79,21 +79,21 @@
       }
     }
   },
-  "DELETE /api/comments/:comment_id": {
+  "DELETE - /api/comments/:comment_id": {
     "description": "serves to remove a comment object based on the comment id",
     "queries": [],
     "exampleResponse": {
       "comments/18": {}
     }
   },
-  "GET /api/topics": {
+  "GET - /api/topics": {
     "description": "serves an array of all topics",
     "queries": [],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
-  "GET /api/users": {
+  "GET - /api/users": {
     "description": "serves an array of objects with the username only",
     "queries": [],
     "exampleResponse": {
