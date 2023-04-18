@@ -1,6 +1,6 @@
 ## MY BE Project: Northcoders News API
 
-NC News is an API intended to be a clone of the popular news website Reddit. This project has been developed using TDD with Jest and Supertest, Node.js, Axios, Express.js and PostgreSQL. The application is hosted via Heroku which you can visit [here](https://ba-be-nc-news-app.herokuapp.com/api).
+NC News is an API intended to be a clone of the popular news website Reddit. This project has been developed using TDD with Jest and Supertest, Node.js, Axios, Express.js and PostgreSQL. The database is hosted by ElephantSQL and the application is hosted via Render which you can visit [here](https://my-be-nc-news.onrender.com/api).
 
 ---
 
